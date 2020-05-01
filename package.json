@@ -30,5 +30,13 @@
     "ts-node": "^8.9.1",
     "typescript": "^3.8.3"
   },
+  "keywords": [
+    "parser",
+    "tree",
+    "text",
+    "data",
+    "parse",
+    "tree parser"
+  ],
   "private": false
 }
