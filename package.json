@@ -9,6 +9,10 @@
   ],
   "author": "Mario Ribeiro <mario@rasgo.cc>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rasgo-cc/text-tree.git"
+  },
   "scripts": {
     "build": "tsc",
     "prepare": "yarn build",
