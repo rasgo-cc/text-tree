@@ -2,11 +2,11 @@
 
 ### Parsing tree data structures from simple text files.
 
-- **Auto-detects** identation (_tabs\_\_ or \_spaces_)
+- **Auto-detects** identation (**tabs** or **spaces**)
 - Uses **streams**
-- Supports any kind of serializable data for each node
-- Customizable resulting node keys (e.g. `id`, `children`)
-- **TypeScript**-friendly
+- **Customizable** resulting node **keys** (e.g. `id`, `children`)
+- Supports any kind of serializable data for each node's data
+- Written in **TypeScript**
 
 Every node must have a unique ID. Each node has its own data and contains a reference for its parent and children.
 
@@ -74,13 +74,14 @@ console.log(result);
 
 ## API
 
-### `parseFile(filePath: string, config: Partial<Config> = {}): Promise<any[]>`
-
-### `parseStream(stream: fs.ReadStream, config: Partial<Config> = {}): Promise<any[]>`
+```ts
+parseFile(filePath: string, config: Partial<Config> = {}): Promise<any[]>
+parseStream(stream: fs.ReadStream, config: Partial<Config> = {}): Promise<any[]>
+```
 
 ## Configuration
 
-```
+```ts
 type TreeNodeId = string | number | null;
 
 interface Config {
@@ -122,7 +123,7 @@ By default, `getId` returns the whole node's data. In the example above, the dat
             {/{/{\{\/}{/{\{\{\(_)/}
              {/{\{\{\/}/}{\{\\}/}
               {){/ {\/}{\/} \}\}
-    apple ---> (_) \.-'.-/
+     apple --> (_) \.-'.-/
           __...--- |'-.-'| --...__
    _...--"   .-'   |'-.-'|  ' -.  ""--.._
  -"    ' .  . '    |.'-._| '  . .  '
