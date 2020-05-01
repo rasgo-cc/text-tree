@@ -1,5 +1,5 @@
 {
-  "name": "text-tree",
+  "name": "@rasgo/text-tree",
   "version": "1.0.0",
   "description": "Parsing trees from text files",
   "main": "dist/index.js",
