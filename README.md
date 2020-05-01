@@ -11,7 +11,7 @@
 ## Example
 
 ```
-$ touch data.txt
+$ cat data.txt
 
 A
     B
