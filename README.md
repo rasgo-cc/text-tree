@@ -100,7 +100,7 @@ interface Config {
 }
 ```
 
-By default, `getId` returns the whole node's data. In the example above, the data is a simple string (a letter), and as such, that would be the `id`. However, data can be parsed through `getId` in order to parse the data and get a custom id.
+By default, `getId()` returns the whole node's data. In the example above, the data is a simple string (a letter), and as such, that would be the `id`. However, data can be parsed through `getId` so a custom id can be used instead.
 
 ## Life
 
