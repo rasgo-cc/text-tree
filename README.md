@@ -8,8 +8,6 @@
 - Supports any kind of serializable data for each node's data
 - Written in **TypeScript**
 
-Every node must have a unique ID. Each node has its own data and contains a reference for its parent and children.
-
 ## Example
 
 ```
@@ -22,6 +20,8 @@ A
 E
     F
 ```
+
+Every node must have a unique ID. Each node has its own data and contains a reference for its parent and children.
 
 ```ts
 import { parseFile } from "text-tree";
