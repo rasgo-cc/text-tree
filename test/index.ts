@@ -1,8 +1,9 @@
 import "mocha";
 import assert from "assert";
 
-import { parseFile } from "../src/index";
+import { parseFile, parseString } from "../src/index";
 import * as expected from "./data/expected";
+import testStr from "./data/str";
 
 describe("tree-text", () => {
   it("should parse tabbed text into tree", async () => {
@@ -23,5 +24,10 @@ describe("tree-text", () => {
   it("should fail to parse bad text", async () => {
     const result = await parseFile("./test/data/bad.txt");
     assert.notDeepStrictEqual(result, expected.resultDefaultKeys);
+  });
+
+  it("should parse from string", async () => {
+    const result = await parseString(testStr);
+    assert.deepStrictEqual(result, expected.resultDefaultKeys);
   });
 });

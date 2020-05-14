@@ -1,6 +1,6 @@
 import readline from "readline";
 import fs from "fs-extra";
-import { PassThrough } from "stream";
+import { PassThrough, Readable } from "stream";
 
 import { renameObjKeys } from "./utils";
 
@@ -71,7 +71,7 @@ const createNode = (
 };
 
 export const parseStream = async (
-  stream: fs.ReadStream,
+  stream: fs.ReadStream | Readable,
   config: Partial<Config> = {}
 ): Promise<TreeNode[]> => {
   const original = stream.pipe(new PassThrough());
@@ -105,6 +105,7 @@ export const parseStream = async (
       const match = line.match(re);
       const depth = !match ? 0 : match.length;
       const trimmedLine = line.trim();
+      if (!trimmedLine) return;
 
       let parent = depth === 0 ? null : parents[depth - 1];
       let treeNode = createNode(trimmedLine, parent, _config);
@@ -125,4 +126,8 @@ export const parseFile = (
   config: Partial<Config> = {}
 ): Promise<TreeNode[]> => {
   return parseStream(fs.createReadStream(filePath), config);
+};
+
+export const parseString = (str: string, config: Partial<Config> = {}) => {
+  return parseStream(Readable.from(str), config);
 };
