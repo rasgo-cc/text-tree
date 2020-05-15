@@ -5,10 +5,10 @@ export const createNode = (
   parent: TreeNode | null,
   config: Config
 ): TreeNode => {
-  const { getId } = config;
+  const { getId, transformId } = config;
   let treeNode: TreeNode = {
     data,
-    id: getId(data),
+    id: transformId(getId(data)),
     parentId: parent ? parent.id : null,
     children: []
   };
@@ -33,12 +33,13 @@ export const flattenNode = (
   tree: TreeNode[],
   config: Config
 ): TreeFlatNode => {
+  const { flatIdSeparator, transformId } = config;
   const { children, parentId, ...flatNode } = node;
   delete node.data;
   const subTree = nodePath(node, tree);
   const ids =
     subTree.length > 0 ? [subTree[subTree.length - 1].id, node.id] : [node.id];
-  const materializedId = ids.join(config.flatIdSeparator);
+  const materializedId = transformId(ids.join(flatIdSeparator));
   node.id = materializedId;
   flatNode.id = materializedId;
   return flatNode;

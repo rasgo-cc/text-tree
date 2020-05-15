@@ -13,6 +13,7 @@ export interface Config {
   flatten: boolean;
   flatIdSeparator: string;
   getId: (data: any) => string;
+  transformId: (id: string) => string;
 }
 
 export interface FlattenTreeData {

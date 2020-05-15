@@ -19,7 +19,8 @@ const defaultConfig: Config = {
   },
   flatten: false,
   flatIdSeparator: "|",
-  getId: (data: any) => data
+  getId: (data: any) => data,
+  transformId: (id: string) => id
 };
 
 const getConfig = (config: Partial<Config> = {}): Required<Config> => {
