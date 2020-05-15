@@ -30,4 +30,9 @@ describe("tree-text", () => {
     const result = await parseString(testStr);
     assert.deepStrictEqual(result, expected.resultDefaultKeys);
   });
+
+  it("should parse into flatten structure", async () => {
+    const result = await parseString(testStr, { flatten: true });
+    assert.deepStrictEqual(result, expected.resultFlat);
+  });
 });

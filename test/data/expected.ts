@@ -39,3 +39,67 @@ export const resultDefaultKeys = [
     ]
   }
 ];
+
+export const resultFlat = {
+  tree: [
+    {
+      id: "A",
+      parentId: null,
+      children: [
+        {
+          id: "B",
+          parentId: "A",
+          children: [
+            {
+              id: "C",
+              parentId: "B",
+              children: []
+            }
+          ]
+        },
+        {
+          id: "D",
+          parentId: "A",
+          children: []
+        }
+      ]
+    },
+    {
+      id: "E",
+      parentId: null,
+      children: [
+        {
+          id: "F",
+          parentId: "E",
+          children: []
+        }
+      ]
+    }
+  ],
+  nodes: [
+    {
+      data: "A",
+      id: "A"
+    },
+    {
+      data: "B",
+      id: "B"
+    },
+    {
+      data: "C",
+      id: "C"
+    },
+    {
+      data: "D",
+      id: "D"
+    },
+    {
+      data: "E",
+      id: "E"
+    },
+    {
+      data: "F",
+      id: "F"
+    }
+  ]
+};

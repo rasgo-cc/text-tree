@@ -13,6 +13,11 @@ interface TreeNode {
   data: any;
 }
 
+interface TreeFlatNode {
+  id: TreeNodeId;
+  data: any;
+}
+
 export interface Config {
   keys: Partial<{
     id: string;
@@ -25,6 +30,7 @@ export interface Config {
     size: number;
     autoDetect: boolean;
   }>;
+  flatten: boolean;
   getId: (data: any) => TreeNodeId;
 }
 
@@ -40,6 +46,7 @@ const defaultConfig: Config = {
     size: 4,
     autoDetect: true
   },
+  flatten: false,
   getId: (data: any) => data
 };
 
@@ -58,7 +65,7 @@ const createNode = (
   data: any,
   parent: TreeNode | null = null,
   config: Partial<Config> = {}
-): any => {
+): TreeNode => {
   const { getId, keys } = getConfig(config);
   let treeNode: TreeNode = {
     data,
@@ -67,13 +74,27 @@ const createNode = (
     children: []
   };
   if (parent) parent.children = [...parent.children, treeNode];
-  return renameObjKeys(treeNode, keys as any);
+  return treeNode;
+};
+
+const nodeFlatten = (node: TreeNode): TreeFlatNode => {
+  const { children, parentId, ...flatNode } = node;
+  delete node.data;
+  return flatNode;
+};
+
+const forEachNode = (nodes: TreeNode[], fn: (node: TreeNode) => any) => {
+  if (!nodes) return;
+  for (const node of nodes) {
+    fn(node);
+    if (node.children) forEachNode(node.children, fn);
+  }
 };
 
 export const parseStream = async (
   stream: fs.ReadStream | Readable,
   config: Partial<Config> = {}
-): Promise<TreeNode[]> => {
+): Promise<any> => {
   const original = stream.pipe(new PassThrough());
   const _config = getConfig(config);
 
@@ -96,10 +117,12 @@ export const parseStream = async (
 
   const rl = readline.createInterface({ input: original });
   const re = getRegExp(_config);
+  const { flatten = false } = _config;
+  const flatNodes: any[] = [];
 
   return new Promise((resolve, _reject) => {
-    let roots: TreeNode[] = [];
-    let parents: { [depth: number]: TreeNode } = {};
+    let roots: any[] = [];
+    let parents: { [depth: number]: any } = {};
 
     rl.on("line", line => {
       const match = line.match(re);
@@ -109,6 +132,11 @@ export const parseStream = async (
 
       let parent = depth === 0 ? null : parents[depth - 1];
       let treeNode = createNode(trimmedLine, parent, _config);
+      if (flatten) {
+        const flatNode = nodeFlatten(treeNode);
+        flatNodes.push(flatNode);
+      }
+
       if (depth === 0) {
         roots.push(treeNode);
       }
@@ -116,7 +144,11 @@ export const parseStream = async (
     });
 
     rl.on("close", () => {
-      return resolve(roots);
+      const { keys } = _config;
+      forEachNode([...roots, ...flatNodes], node =>
+        renameObjKeys(node, keys as any)
+      );
+      return resolve(flatten ? { tree: roots, nodes: flatNodes } : roots);
     });
   });
 };
