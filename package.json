@@ -1,6 +1,6 @@
 {
   "name": "@rasgo/text-tree",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Parsing trees from text files",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
