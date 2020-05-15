@@ -34,6 +34,11 @@ export interface Config {
   getId: (data: any) => TreeNodeId;
 }
 
+export interface FlattenTreeData {
+  tree: TreeNode[];
+  nodes: TreeFlatNode[];
+}
+
 const defaultConfig: Config = {
   keys: {
     id: "id",
@@ -94,7 +99,7 @@ const forEachNode = (nodes: TreeNode[], fn: (node: TreeNode) => any) => {
 export const parseStream = async (
   stream: fs.ReadStream | Readable,
   config: Partial<Config> = {}
-): Promise<any> => {
+): Promise<TreeNode[] | FlattenTreeData> => {
   const original = stream.pipe(new PassThrough());
   const _config = getConfig(config);
 
@@ -148,15 +153,14 @@ export const parseStream = async (
       forEachNode([...roots, ...flatNodes], node =>
         renameObjKeys(node, keys as any)
       );
-      return resolve(flatten ? { tree: roots, nodes: flatNodes } : roots);
+      return resolve(
+        flatten ? ({ tree: roots, nodes: flatNodes } as FlattenTreeData) : roots
+      );
     });
   });
 };
 
-export const parseFile = (
-  filePath: string,
-  config: Partial<Config> = {}
-): Promise<TreeNode[]> => {
+export const parseFile = (filePath: string, config: Partial<Config> = {}) => {
   return parseStream(fs.createReadStream(filePath), config);
 };
 
