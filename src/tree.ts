@@ -35,9 +35,12 @@ export const flattenNode = (
 ): TreeFlatNode => {
   const { children, parentId, ...flatNode } = node;
   delete node.data;
-  flatNode.id = [...nodePath(node, tree).map(n => n.id), node.id].join(
-    config.flatIdSeparator
-  );
+  const subTree = nodePath(node, tree);
+  const ids =
+    subTree.length > 0 ? [subTree[subTree.length - 1].id, node.id] : [node.id];
+  const materializedId = ids.join(config.flatIdSeparator);
+  node.id = materializedId;
+  flatNode.id = materializedId;
   return flatNode;
 };
 
